@@ -78,12 +78,18 @@ body {
     background-color: var(--cor-vinho);
 }
 
-footer {
-  margin-top: 32px;
-  padding: 16px 0;
-  text-align: center;
-  font-size: 14px;
-  opacity: 0.7;
+.filme-poster {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.filme-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
 }
 
 #movies {
@@ -91,4 +97,12 @@ footer {
     display: grid;
     grid-template-columns: 1fr;
     gap:1.5rem;
+}
+
+footer {
+  margin-top: 32px;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.7;
 }

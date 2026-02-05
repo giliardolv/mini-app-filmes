@@ -18,19 +18,31 @@ async function buscarFilmes(nome) {
         }
         
         dados.Search.forEach(filme => {
-
             const card = document.createElement('div');
             const cardTitulo = document.createElement('h3');
             const cardAno = document.createElement('p');
+            const cardPoster = document.createElement('img');
+
             card.classList.add('filme-card');
             cardTitulo.classList.add('filme-titulo');
-            cardAno.classList.add('filme-ano')
+            cardAno.classList.add('filme-ano');
+            cardPoster.classList.add('filme-poster');
+
             cardTitulo.textContent = filme.Title;
             cardAno.textContent = filme.Year;
-            areaFilmes.appendChild(card);
+
+            if(filme.Poster !== 'N/A'){
+                cardPoster.src = filme.Poster;
+                cardPoster.alt = `Poster do filme ${filme.Title}`;
+            }else{
+                cardPoster.src = 'https://via.placeholder.com/300x450?text=Sem+Imagem';
+                cardPoster.alt = 'Imagem não disponível';
+            }
+
+            card.appendChild(cardPoster);
             card.appendChild(cardTitulo);
             card.appendChild(cardAno);
-
+            areaFilmes.appendChild(card);
         });
     }
     catch (erro) {

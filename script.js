@@ -6,17 +6,10 @@ const textoBoasVindas = document.querySelector('.texto-boas-vindas');
 async function buscarFilmes(nome) {
     const baseUrl = 'https://www.omdbapi.com/?apikey=';
     const apikey = '9130d155';
-
-    inputArea.value = '';
-    nome = nome.trim().toLowerCase();
-    if(!nome){
-        alert('Por favor, insira o nome de um filme.');
-        return;
-    }
-
     const nomeCode = encodeURIComponent(nome);
 
     try {
+        areaFilmes.innerHTML = '';
         const resposta = await fetch(`${baseUrl}${apikey}&s=${nomeCode}`);
         const dados = await resposta.json();
         if(dados.Response === 'False'){
@@ -45,10 +38,45 @@ async function buscarFilmes(nome) {
     }
 }
 
+async function traduzir(texto){
+    const url = 'https://api.mymemory.translated.net/get?q=';
+    const langpair = '&langpair=pt|en';
+    const nomeCode = encodeURIComponent(texto);
+
+    try {
+        const res = await fetch(`${url}${nomeCode}${langpair}`);
+
+        if(!res.ok){
+            throw new Error('Erro HTTP: ' + res.status);
+        }
+
+        const data = await res.json();
+        return data.responseData.translatedText;
+    }catch (erro) {
+        console.log('Erro na tradução: ' + erro.message);
+    }
+}
+
+ async function filtrarNome(nome){
+    inputArea.value = '';
+    nome = nome.trim().toLowerCase();
+    if(!nome){
+        alert('Por favor, insira o nome de um filme.');
+        return;
+    }
+
+    const traducao = await traduzir(nome);
+
+    if(!traducao){
+        alert('Erro ao traduzir o nome do filme.');
+        return;
+    }
+    buscarFilmes(traducao);
+}
+
 btnBuscar.addEventListener('click' , (event) => {
     event.preventDefault();
     textoBoasVindas.style.display = 'none';
-    areaFilmes.innerHTML = '';
-    buscarFilmes(inputArea.value);
+    filtrarNome(inputArea.value);
 })
 

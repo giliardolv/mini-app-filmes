@@ -43,10 +43,27 @@ async function buscarFilmes(nome) {
             card.appendChild(cardTitulo);
             card.appendChild(cardAno);
             areaFilmes.appendChild(card);
-        });
+
+            card.dataset.imdbid = filme.imdbID;
+            card.addEventListener('click', () => {
+                buscarDetalhesFilme(filme.imdbID);
+            })
+         });
     }
     catch (erro) {
         console.log('Erro na requisição: ' + erro.message);
+    }
+}
+
+async function buscarDetalhesFilme(imdbID){
+    const baseUrl = 'https://www.omdbapi.com/?apikey=';
+    const apikey = '9130d155';
+    try {
+        const resposta = await fetch(`${baseUrl}${apikey}&i=${imdbID}&plot=full`);
+        const dados = await resposta.json();
+        console.log(dados);
+    } catch (erro) {
+        console.log('Erro ao buscar detalhes: ' + erro.message);
     }
 }
 

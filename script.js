@@ -3,6 +3,17 @@ const btnBuscar = document.getElementById('botao-buscar');
 const areaFilmes = document.getElementById('movies');
 const textoBoasVindas = document.querySelector('.texto-boas-vindas');
 
+const modal = document.getElementById('modal-filme');
+const modalOverlay = modal.querySelector('.modal-overlay');
+const btnFecharModal = modal.querySelector('.modal-fechar');
+
+const modalPoster = modal.querySelector('.modal-poster');
+const modalTitulo = modal.querySelector('.modal-titulo');
+const modalAno = modal.querySelector('.modal-ano');
+const modalGenero = modal.querySelector('.modal-genero');
+const modalNota = modal.querySelector('.modal-nota');
+const modalPlot = modal.querySelector('.modal-plot');
+
 async function buscarFilmes(nome) {
     const baseUrl = 'https://www.omdbapi.com/?apikey=';
     const apikey = '9130d155';
@@ -60,8 +71,11 @@ async function buscarDetalhesFilme(imdbID){
     const apikey = '9130d155';
     try {
         const resposta = await fetch(`${baseUrl}${apikey}&i=${imdbID}&plot=full`);
-        const dados = await resposta.json();
-        console.log(dados);
+        const filme = await resposta.json();
+
+        preencherModal(filme);
+        abrirModal();
+
     } catch (erro) {
         console.log('Erro ao buscar detalhes: ' + erro.message);
     }
@@ -103,9 +117,40 @@ async function traduzir(texto){
     buscarFilmes(traducao);
 }
 
+function preencherModal(filme){
+    modalPoster.src = 
+        filme.Poster !== 'N/A'
+            ? filme.Poster
+            : 'https://via.placeholder.com/300x450?text=Sem+Imagem';
+    
+    modalTitulo.textContent = filme.Title;
+    modalAno.textContent = `Ano: ${filme.Year}`;
+    modalGenero.textContent = `Gênero: ${filme.Genre}`;
+    modalNota.textContent = `IMDb: ${filme.imdbRating}`;
+    modalPlot.textContent = filme.Plot;
+}
+
+function abrirModal(){
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModal(){
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+btnFecharModal.addEventListener('click', fecharModal);
+modalOverlay.addEventListener('click', fecharModal);
+
+document.addEventListener('keydown', (event) => {
+    if(event.key === 'Escape' && !modal.classList.contains('hidden')){
+        fecharModal();
+    }
+})
+
 btnBuscar.addEventListener('click' , (event) => {
     event.preventDefault();
     textoBoasVindas.style.display = 'none';
     filtrarNome(inputArea.value);
 })
-

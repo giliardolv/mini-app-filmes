@@ -133,12 +133,19 @@ function preencherModal(filme){
 function abrirModal(){
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+    history.pushState({modal: true}, '');
 }
 
 function fecharModal(){
     modal.classList.add('hidden');
     document.body.style.overflow = '';
 }
+
+window.addEventListener('popstate', () => {
+    if(!modal.classList.contains('hidden')){
+        fecharModal();
+    }
+})
 
 btnFecharModal.addEventListener('click', fecharModal);
 modalOverlay.addEventListener('click', fecharModal);

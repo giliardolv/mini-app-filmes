@@ -119,7 +119,7 @@ Este projeto está em desenvolvimento contínuo.
 
 ### 🔮 Próximas melhorias planejadas:
 
--🎬 Exibição de trailer do filme no modal de detalhes (caso disponível)
+- 🎬 Exibição de trailer do filme no modal de detalhes (caso disponível)
 - 🌍 Traduzir também as respostas retornadas pela OMDb
 - 💾 Sistema de favoritos utilizando localStorage
 - 📄 Paginação de resultados
